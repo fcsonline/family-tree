@@ -1,0 +1,65 @@
+.root {
+  position: absolute;
+  display: flex;
+  padding: 10px;
+}
+
+.inner {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  justify-content: center;
+  border: 2px solid rgba(0, 0, 0, .2);
+  border-radius: 10px 0;
+  padding: 5px;
+  gap: 5px;
+  font-size: 12px;
+  text-align: center;
+}
+
+.name {
+  font-weight: bold;
+  margin: 0px;
+}
+
+.from {
+  color: #666;
+  margin: 0px;
+}
+
+.date {
+  color: #888;
+  margin: 0px;
+}
+
+.male {
+  background: #e2f9ff;
+}
+
+.female {
+  background: #f9dbeb;
+}
+
+.isRoot {
+  border-color: rgba(0, 0, 0, .4);;
+}
+
+.sub {
+  position: absolute;
+  top: 6px;
+  right: 14px;
+  width: 14px;
+  height: 10px;
+  border: 1px solid rgba(0, 0, 0, .2);
+  border-radius: 4px 0;
+  background: #fff;
+  cursor: pointer;
+}
+
+.sub.male {
+  background: #ddd;
+}
+
+.sub.female {
+  background: #ddd;
+}
