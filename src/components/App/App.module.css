@@ -25,6 +25,7 @@
 
 .wrapper {
   flex: 1;
+  cursor: hand;
 }
 
 .tree {
@@ -43,4 +44,21 @@
   border-radius: 4px;
   line-height: 1;
   cursor: pointer;
+}
+
+.description {
+  color: #aaa;
+}
+
+.loading {
+  text-align: center;
+  padding: 20px;
+  font-size: 20px;
+}
+
+.error {
+  color: red;
+  text-align: center;
+  padding: 20px;
+  font-size: 20px;
 }
