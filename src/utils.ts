@@ -11,7 +11,7 @@ const GENDER='Gènere'
 const FROM='Lloc de naixament'
 const BIRTHDAY='Data de naixament'
 const DEFUNCT='Data de defunció'
-// const MARRIAGEDAY='Data matrimoni'
+const SPOUSE='Cònjuge'
 
 const MALE='Home'
 const FEMALE='Dona'
@@ -45,6 +45,7 @@ interface DataMember {
   name: string,
   father: string,
   mother: string,
+  spouse: string,
   gender: string,
   from: string,
   birthday: string,
@@ -83,22 +84,7 @@ type DataMembers = Array<DataMember>
  }
 
  const computeSpouses = (members: DataMembers, member: DataMember): Array<IRelation> => {
-   const children = _.filter(members, (item) => {
-     return (
-       member.name === item.father ||
-       member.name === item.mother
-     )
-   })
-   const spouses: DataMembers = _.uniq(_.compact(_.map(
-     children,
-     (child) => {
-       if (child.father === member.name) {
-         return _.find(members, (item) => item.name === child.mother)
-       } else {
-         return _.find(members, (item) => item.name === child.father)
-       }
-     }
-   )))
+   const spouses = _.filter(members, (item) => item.name === member.spouse)
 
    return _.map(
      spouses,
@@ -159,6 +145,7 @@ const computeMember = (members: DataMembers, member: DataMember) => {
      const gender = row[GENDER] as string
      const father = row[FATHER] as string
      const mother = row[MOTHER] as string
+     const spouse = row[SPOUSE] as string
 
      // NOTE: Ensure unique. Names are not unique sometimes...
      const hash = crypto.createHash('sha1')
@@ -169,6 +156,7 @@ const computeMember = (members: DataMembers, member: DataMember) => {
        name,
        father,
        mother,
+       spouse,
        from,
        birthday,
        deathday,
