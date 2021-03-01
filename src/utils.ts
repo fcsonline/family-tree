@@ -12,6 +12,7 @@ const FROM='Lloc de naixament'
 const BIRTHDAY='Data de naixament'
 const DEFUNCT='Data de defunció'
 const SPOUSE='Cònjuge'
+const IMAGE='Foto'
 
 const MALE='Home'
 const FEMALE='Dona'
@@ -48,6 +49,7 @@ interface DataMember {
   spouse: string,
   gender: string,
   from: string,
+  image: string,
   birthday: string,
   deathday: string
 }
@@ -127,6 +129,7 @@ const computeMember = (members: DataMembers, member: DataMember) => {
      from: member.from,
      birthday: member.birthday,
      deathday: member.deathday,
+     image: member.image,
 
      gender,
      parents,
@@ -146,6 +149,7 @@ const computeMember = (members: DataMembers, member: DataMember) => {
      const father = row[FATHER] as string
      const mother = row[MOTHER] as string
      const spouse = row[SPOUSE] as string
+     const image = row[IMAGE] as string
 
      // NOTE: Ensure unique. Names are not unique sometimes...
      const hash = crypto.createHash('sha1')
@@ -160,6 +164,7 @@ const computeMember = (members: DataMembers, member: DataMember) => {
        from,
        birthday,
        deathday,
+       image,
        gender
      }
    })

@@ -88,6 +88,7 @@ export default React.memo<{}>(
                   node={node as IExtMember}
                   isRoot={node.id === rootId}
                   onSubClick={setRootId}
+                  onClick={setRootId}
                   style={{
                     width: WIDTH,
                     height: HEIGHT,

@@ -63,7 +63,7 @@
   cursor: pointer;
 }
 
-.image {
+.anonymous {
   border: 1px solid #ddd;
   width: 20px;
   height: 20px;
@@ -73,4 +73,21 @@
   bottom: 15px;
   right: 15px;
   background: #fff;
+}
+
+.image {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1px solid #ddd;
+  position: absolute;
+  bottom: 15px;
+  right: 15px;
+  overflow: hidden;
+}
+
+.image:hover {
+  width: 60px;
+  height: 60px;
+  box-shadow: 0px 0px 5px rgba(255,255,255, 0.8);
 }
