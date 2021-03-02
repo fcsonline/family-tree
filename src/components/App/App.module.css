@@ -28,6 +28,10 @@
   cursor: hand;
 }
 
+.emoji {
+  margin-right: 5px;
+}
+
 .tree {
   background: #fff;
   border: 1px solid #ddd;

@@ -20,6 +20,7 @@ export default React.memo<{}>(
     const [fetching, setFetching] = useState<boolean>(true);
     const [nodes, setNodes] = useState<Object>([]);
 
+    const [search, setSearch] = useState<string>('');
     const [defaultId, setDefaultId] = useState<string>('');
     const [rootId, setRootId] = useState<string>('');
     const onResetClick = useCallback(() => setRootId(defaultId), [defaultId]);
@@ -46,15 +47,25 @@ export default React.memo<{}>(
       compute()
     }, [])
 
+    const onSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+      setSearch(e && e.target.value)
+    }
+
     return (
       <div className={styles.root}>
         <header className={styles.header}>
           <h1 className={styles.title}>
-            <span role="img" aria-label="Arbre">
+            <span className={styles.emoji} role="img" aria-label="Arbre">
              🌳
             </span>
             Arbre Genealògic
           </h1>
+          <div className={styles.searcher}>
+            <span className={styles.emoji} role="img" aria-label="Cercar">
+             🔍
+            </span>
+            Cercar: <input type="text" value={search} onChange={onSearch} />
+          </div>
           <span className={styles.description}>
             Arbre Genealògic amb tots els avantpassats coneguts de la nostra familia
           </span>
@@ -87,6 +98,7 @@ export default React.memo<{}>(
                   key={node.id}
                   node={node as IExtMember}
                   isRoot={node.id === rootId}
+                  search={search}
                   onSubClick={setRootId}
                   onClick={setRootId}
                   style={{

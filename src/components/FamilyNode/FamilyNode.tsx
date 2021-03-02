@@ -7,6 +7,7 @@ import styles from './FamilyNode.module.css';
 interface Props {
   node: IExtMember;
   isRoot: boolean;
+  search?: string,
   onClick: (id: string) => void;
   onSubClick: (id: string) => void;
   style?: React.CSSProperties;
@@ -27,14 +28,15 @@ export interface IExtMember extends IFamilyExtNode {
 }
 
 export default React.memo<Props>(
-  function FamilyNode({ node, isRoot, onClick, onSubClick, style }) {
+  function FamilyNode({ node, isRoot, search, onClick, onSubClick, style }) {
     const dates = _.compact([node.birthday, node.deathday]).join(' - ')
     const captures = (node.image || '').match(/https:\/\/drive.google.com\/file\/d\/(.*)\/view/)
     const imageId = captures && captures[1]
+    const isMatch = !!search && (new RegExp(_.escapeRegExp(search), 'i')).test(node.name)
 
     return (
       <div
-        className={styles.root}
+        className={classNames(styles.root, isMatch && styles.match)}
         style={style}
         onClick={() => { onClick(node.id) }}
       >
