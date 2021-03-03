@@ -55,6 +55,18 @@
   box-shadow: 2px 2px 2px rgba(0, 0, 255, .2);
 }
 
+.birthday .inner {
+  border: 2px solid rgba(255, 200, 30);
+  background: rgba(255, 250, 120);
+  animation: blink 3s linear infinite;
+}
+
+@keyframes blink{
+  0% { border: 2px solid rgba(255, 200, 30); }
+  50% { border: 2px solid rgba(255, 251, 171); }
+  100% { border: 2px solid rgba(255, 200, 30); }
+}
+
 .sub {
   position: absolute;
   top: 6px;
@@ -66,6 +78,11 @@
   border-radius: 50%;
   background: #fff;
   cursor: pointer;
+}
+
+.birthday .inner {
+  border: 2px solid ;
+  border: 2px solid rgba(0, 0, 0, .2);
 }
 
 .anonymous {

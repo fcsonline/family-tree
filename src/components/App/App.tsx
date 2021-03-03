@@ -20,6 +20,7 @@ export default React.memo<{}>(
     const [fetching, setFetching] = useState<boolean>(true);
     const [nodes, setNodes] = useState<Object>([]);
 
+    const [highlightBirthdays, setHighlightBirthdays] = React.useState<boolean>(true)
     const [search, setSearch] = useState<string>('');
     const [defaultId, setDefaultId] = useState<string>('');
     const [rootId, setRootId] = useState<string>('');
@@ -51,6 +52,10 @@ export default React.memo<{}>(
       setSearch(e && e.target.value)
     }
 
+    const onHighlightBirthdays = (e: React.ChangeEvent<HTMLInputElement>) => {
+      setHighlightBirthdays(e && e.target.checked)
+    }
+
     return (
       <div className={styles.root}>
         <header className={styles.header}>
@@ -65,6 +70,12 @@ export default React.memo<{}>(
              🔍
             </span>
             Cercar: <input type="text" value={search} onChange={onSearch} />
+          </div>
+          <div className={styles.searcher}>
+            <span className={styles.emoji} role="img" aria-label="Aniversaris">
+             🎂
+            </span>
+            Destacar pròxims aniversaris: <input type="checkbox" defaultChecked={highlightBirthdays} onChange={onHighlightBirthdays} />
           </div>
           <span className={styles.description}>
             Arbre Genealògic amb tots els avantpassats coneguts de la nostra familia
@@ -99,6 +110,7 @@ export default React.memo<{}>(
                   node={node as IExtMember}
                   isRoot={node.id === rootId}
                   search={search}
+                  highlightBirthday={highlightBirthdays}
                   onSubClick={setRootId}
                   onClick={setRootId}
                   style={{
