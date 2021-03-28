@@ -1,6 +1,6 @@
-import { IMember } from './components/FamilyNode/FamilyNode';
-import crypto, { Utf8AsciiLatin1Encoding } from 'crypto'
-import { Gender, IRelation, RelationType } from 'relatives-tree/lib/types';
+// import crypto, { Utf8AsciiLatin1Encoding } from 'crypto'
+import { Gender, RelType, Relation } from 'relatives-tree/lib/types';
+import { Member } from './types'
 import Papa from 'papaparse'
 import _ from 'lodash'
 
@@ -23,24 +23,6 @@ interface IHash<T> {
 
 type Rows = Array<IHash<string>>
 
-interface Relation {
-  id: string,
-  type: string
-}
-
-export interface Member {
-  id: string,
-  name: string,
-  from: string,
-  birthday: string,
-  deathday: string,
-  gender: Gender,
-  parents: Array<IRelation>,
-  siblings: Array<IRelation>,
-  spouses: Array<IRelation>,
-  children: Array<IRelation>
-}
-
 interface DataMember {
   id: string,
   name: string,
@@ -57,22 +39,22 @@ interface DataMember {
 type DataMembers = Array<DataMember>
 
  // Auxiliary functions
- const computeRelation = (member: DataMember, type: RelationType): IRelation => {
+ const computeRelation = (member: DataMember, type: RelType): Relation => {
    return {
      id: member.id,
      type
    }
  }
- const computeParents = (members: DataMembers, member: DataMember): Array<IRelation> => {
+ const computeParents = (members: DataMembers, member: DataMember): Array<Relation> => {
    return _.map(
      _.filter(members, (item) => {
        return member.father === item.name || member.mother === item.name
      }),
-     (member: DataMember) => computeRelation(member, 'blood')
+     (member: DataMember) => computeRelation(member, 'blood' as RelType)
    )
  }
 
- const computeSiblings = (members: DataMembers, member: DataMember): Array<IRelation> => {
+ const computeSiblings = (members: DataMembers, member: DataMember): Array<Relation> => {
    return _.map(
      _.filter(members, (item) => {
        return (
@@ -81,20 +63,20 @@ type DataMembers = Array<DataMember>
          member.name !== item.name
        )
      }),
-     (member: DataMember) => computeRelation(member, 'blood')
+     (member: DataMember) => computeRelation(member, 'blood' as RelType)
    )
  }
 
- const computeSpouses = (members: DataMembers, member: DataMember): Array<IRelation> => {
+ const computeSpouses = (members: DataMembers, member: DataMember): Array<Relation> => {
    const spouses = _.filter(members, (item) => item.name === member.spouse)
 
    return _.map(
      spouses,
-     (member: DataMember) => computeRelation(member, 'married')
+     (member: DataMember) => computeRelation(member, 'married' as RelType)
    )
  }
 
- const computeChildren = (members: DataMembers, member: DataMember): Array<IRelation> => {
+ const computeChildren = (members: DataMembers, member: DataMember): Array<Relation> => {
    return _.map(
      _.filter(members, (item) => {
        return (
@@ -102,17 +84,17 @@ type DataMembers = Array<DataMember>
          member.name === item.mother
        )
      }),
-     (member: DataMember) => computeRelation(member, 'blood')
+     (member: DataMember) => computeRelation(member, 'blood' as RelType)
    )
  }
 
  const computeGenre = (members: DataMembers, member: DataMember): Gender => {
    if (member.gender === MALE) {
-     return 'male'
+     return 'male' as Gender
    } else if (member.gender === FEMALE) {
-     return 'female'
+     return 'female' as Gender
    } else {
-     return 'male' // TODO: Unknown
+     return 'male' as Gender // TODO: Unknown
    }
  }
 
@@ -152,11 +134,11 @@ const computeMember = (members: DataMembers, member: DataMember) => {
      const image = row[IMAGE] as string
 
      // NOTE: Ensure unique. Names are not unique sometimes...
-     const hash = crypto.createHash('sha1')
-     const id = hash.update(name, 'utf-8' as Utf8AsciiLatin1Encoding).digest('hex')
+     // const hash = crypto.createHash('sha1')
+     // const id = hash.update(name, 'utf-8' as Utf8AsciiLatin1Encoding).digest('hex').slice(0, 6)
 
      return {
-       id,
+       id: name,
        name,
        father,
        mother,
@@ -170,7 +152,7 @@ const computeMember = (members: DataMembers, member: DataMember) => {
    })
 }
 
-const computeMembers = async (text: string): Promise<Array<IMember>> => {
+const computeMembers = async (text: string): Promise<Array<Member>> => {
   const { data } = Papa.parse<IHash<string>>(text, { header: true });
 
   const members: DataMembers = mapMembers(data)

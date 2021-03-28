@@ -1,32 +1,18 @@
 import React from 'react';
 import _ from 'lodash';
 import classNames from 'classnames';
-import { IFamilyNode, IFamilyExtNode } from 'relatives-tree/lib/types';
+import { ExtMember } from '../../types'
 import styles from './FamilyNode.module.css';
 import { getYear, setYear, parse, differenceInDays } from 'date-fns'
 
 interface Props {
-  node: IExtMember;
+  node: ExtMember;
   isRoot: boolean;
   search?: string,
   highlightBirthday: boolean,
   onClick: (id: string) => void;
   onSubClick: (id: string) => void;
   style?: React.CSSProperties;
-}
-
-export interface IMember extends IFamilyNode {
-  name: string;
-  from: string;
-  birthday: string;
-}
-
-export interface IExtMember extends IFamilyExtNode {
-  name: string;
-  from: string;
-  image: string;
-  birthday: string;
-  deathday: string;
 }
 
 export default React.memo<Props>(

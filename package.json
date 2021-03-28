@@ -14,7 +14,7 @@
     "pinch-zoom-pan": "3.0.0",
     "react": "16.13.1",
     "react-dom": "16.13.1",
-    "react-family-tree": "2.0.2",
+    "react-family-tree": "3.0.0",
     "swr": "^0.4.2",
     "typescript": "3.9.7"
   },

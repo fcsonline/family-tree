@@ -1,10 +1,10 @@
 import React, { useState, useCallback, useEffect } from 'react';
-// import nodes from '../../tree.json';
+import _ from 'lodash'
 import ReactFamilyTree from 'react-family-tree';
 import PinchZoomPan from '../PinchZoomPan/PinchZoomPan';
 import FamilyNode from '../FamilyNode/FamilyNode';
-import { IFamilyExtNode } from 'relatives-tree/lib/types';
-import { IMember, IExtMember } from '../FamilyNode/FamilyNode';
+import { Node, ExtNode } from 'relatives-tree/lib/types';
+import { Member, ExtMember } from '../../types'
 
 import computeMembers from '../../utils'
 
@@ -18,7 +18,7 @@ export default React.memo<{}>(
   function App() {
     const [error, setError] = useState<boolean>(false);
     const [fetching, setFetching] = useState<boolean>(true);
-    const [nodes, setNodes] = useState<Object>([]);
+    const [nodes, setNodes] = useState<Array<Member>>([]);
 
     const [highlightBirthdays, setHighlightBirthdays] = React.useState<boolean>(true)
     const [search, setSearch] = useState<string>('');
@@ -33,7 +33,19 @@ export default React.memo<{}>(
 
         if (response.ok) {
           const text = await response.text()
-          const members: Array<IMember> = await computeMembers(text)
+          const members: Array<Member> = await computeMembers(text)
+
+          const annonymous = members.map((member, index) => _.pickBy({
+            ...member,
+            // name: `Member #${index}`,
+            from: null,
+            birthday: null,
+            deathday: null,
+            image: null
+          }, _.identity))
+
+          console.log(members)
+          console.log(annonymous)
 
           setNodes(members)
           setRootId(members[0].id)
@@ -99,15 +111,15 @@ export default React.memo<{}>(
             className={styles.wrapper}
           >
             <ReactFamilyTree
-              nodes={nodes as IMember[]}
+              nodes={nodes as Node[]}
               rootId={rootId}
               width={WIDTH}
               height={HEIGHT}
               className={styles.tree}
-              renderNode={(node: IFamilyExtNode) => (
+              renderNode={(node: ExtNode) => (
                 <FamilyNode
                   key={node.id}
-                  node={node as IExtMember}
+                  node={node as ExtMember}
                   isRoot={node.id === rootId}
                   search={search}
                   highlightBirthday={highlightBirthdays}
