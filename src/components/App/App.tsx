@@ -11,8 +11,8 @@ import computeMembers from '../../utils'
 import styles from './App.module.css';
 
 const url = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRz7IXuNUVIbhYCe8f-ERoYfpx4JZVGKijx6ksTc6NyJb9RbSjkMfgIitSg6gbsFA5UqK7UNg5bkFel/pub?gid=1970367138&single=true&output=csv'
-const WIDTH = 200;
-const HEIGHT = 120;
+const WIDTH = 190;
+const HEIGHT = 220;
 
 export default React.memo<{}>(
   function App() {

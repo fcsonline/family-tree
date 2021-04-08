@@ -2,33 +2,31 @@
   position: absolute;
   display: flex;
   padding: 10px;
+  background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%);
 }
 
 .inner {
   display: flex;
   flex-direction: column;
   flex: 1;
+  align-items: center;
   justify-content: center;
-  border: 2px solid rgba(0, 0, 0, .2);
-  box-shadow: 2px 2px 2px #EEE;
   border-radius: 5px;
-  padding: 5px;
-  gap: 5px;
+  padding: 60px 5px 5px 5px;
+  gap: 2px;
   font-size: 12px;
   text-align: center;
 }
 
-.match .inner {
-  border: 2px solid rgba(248, 222, 100);
-  background: rgba(254, 246, 91);
-}
-
-.inner:hover {
-  border: 2px solid rgba(0, 0, 0, .4);
+.match .inner .image, .match .inner .anonymous {
+  border: 3px solid rgb(248, 222, 100);
+  box-shadow: 0px 0px 50px rgba(255, 242, 0, 1);
 }
 
 .name {
+  color: #333;
   font-weight: bold;
+  white-space: nowrap;
   margin: 0px;
 }
 
@@ -42,74 +40,58 @@
   margin: 0px;
 }
 
-.male {
-  background: #e2f9ff;
+.age {
+  color: #333;
+  margin-left: 2px;
 }
 
-.female {
-  background: #f9dbeb;
+.male .image {
+  border: 3px solid rgb(226, 249, 255, 1);
 }
 
-.isRoot {
-  border-color: rgba(0, 0, 255, .4);
-  box-shadow: 2px 2px 2px rgba(0, 0, 255, .2);
+.female .image {
+  border: 3px solid rgb(249, 219, 235, 1);
 }
 
-.birthday .inner {
-  border: 2px solid rgba(255, 200, 30);
-  background: rgba(255, 250, 120);
+.isRoot .inner .image {
+  border-color: rgba(0, 0, 255, .9);
+  box-shadow: 0px 0px 5px rgba(0, 0, 255, .9);
+}
+
+.birthday .inner .image {
+  border: 3px solid rgb(248, 222, 100);
+  box-shadow: 0px 0px 5px rgba(255, 242, 0, 1);
   animation: blink 3s linear infinite;
 }
 
-@keyframes blink{
-  0% { border: 2px solid rgba(255, 200, 30); }
-  50% { border: 2px solid rgba(255, 251, 171); }
-  100% { border: 2px solid rgba(255, 200, 30); }
-}
-
-.sub {
-  position: absolute;
-  top: 6px;
-  right: 14px;
-  width: 18px;
-  height: 17px;
-  padding: 1px;
-  border: 1px solid rgba(0, 0, 0, .2);
-  border-radius: 50%;
-  background: #fff;
-  cursor: pointer;
-}
-
-.birthday .inner {
-  border: 2px solid ;
-  border: 2px solid rgba(0, 0, 0, .2);
+@keyframes blink {
+  0% { box-shadow: 0px 0px 5px rgb(255, 200, 30); }
+  50% { box-shadow: 0px 0px 50px rgb(255, 251, 171); }
+  100% { box-shadow: 0px 0px 5px rgb(255, 200, 30); }
 }
 
 .anonymous {
-  border: 1px solid #ddd;
-  width: 20px;
-  height: 20px;
-  padding: 2px;
+  width: 70px;
+  height: 70px;
   border-radius: 50%;
-  position: absolute;
-  bottom: 15px;
-  right: 15px;
+  border: 2px solid #ddd;
+  padding: 10px;
   background: #fff;
 }
 
 .image {
-  width: 20px;
-  height: 20px;
+  width: 70px;
+  height: 70px;
   border-radius: 50%;
-  border: 1px solid #ddd;
-  position: absolute;
-  bottom: 15px;
-  right: 15px;
+  border: 3px solid #ddd;
   overflow: hidden;
 }
 
-.image:hover {
-  width: 60px;
-  height: 60px;
-  box-shadow: 0px 0px 5px rgba(255,255,255, 0.8);
+.inner:hover {
+  cursor: pointer;
 }
+
+.inner:hover .image {
+  border: 3px solid #888;
+}
+

@@ -7,6 +7,7 @@ export type Member = Node & {
   image: string,
   birthday: string,
   deathday: string,
+  age: string,
   gender: Gender,
   parents: Array<Relation>,
   siblings: Array<Relation>,

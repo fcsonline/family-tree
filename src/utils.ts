@@ -13,6 +13,7 @@ const BIRTHDAY='Data de naixament'
 const DEFUNCT='Data de defunció'
 const SPOUSE='Cònjuge'
 const IMAGE='Foto'
+const AGE='Edat'
 
 const MALE='Home'
 const FEMALE='Dona'
@@ -33,7 +34,8 @@ interface DataMember {
   from: string,
   image: string,
   birthday: string,
-  deathday: string
+  deathday: string,
+  age: string
 }
 
 type DataMembers = Array<DataMember>
@@ -111,6 +113,7 @@ const computeMember = (members: DataMembers, member: DataMember) => {
      from: member.from,
      birthday: member.birthday,
      deathday: member.deathday,
+     age: member.age,
      image: member.image,
 
      gender,
@@ -132,6 +135,9 @@ const computeMember = (members: DataMembers, member: DataMember) => {
      const mother = row[MOTHER] as string
      const spouse = row[SPOUSE] as string
      const image = row[IMAGE] as string
+     const age = row[AGE] as string
+
+     if (!name) return null
 
      // NOTE: Ensure unique. Names are not unique sometimes...
      // const hash = crypto.createHash('sha1')
@@ -147,7 +153,8 @@ const computeMember = (members: DataMembers, member: DataMember) => {
        birthday,
        deathday,
        image,
-       gender
+       gender,
+       age
      }
    })
 }
@@ -155,7 +162,7 @@ const computeMember = (members: DataMembers, member: DataMember) => {
 const computeMembers = async (text: string): Promise<Array<Member>> => {
   const { data } = Papa.parse<IHash<string>>(text, { header: true });
 
-  const members: DataMembers = mapMembers(data)
+  const members: DataMembers = _.compact(mapMembers(data))
 
   return members.map((member: DataMember) => computeMember(members, member))
 }
