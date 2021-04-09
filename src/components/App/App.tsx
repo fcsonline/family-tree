@@ -17,7 +17,7 @@ const HEIGHT = 220;
 
 export default React.memo<{}>(
   function App() {
-    const [passphrase, setPassphrase] = useState<string>('');
+    const [passphrase, setPassphrase] = useState<string>(window.localStorage.getItem('passphrase') || '');
     const [error, setError] = useState<boolean>(false);
     const [fetching, setFetching] = useState<boolean>(true);
     const [nodes, setNodes] = useState<Array<Member>>([]);
@@ -46,28 +46,34 @@ export default React.memo<{}>(
         const response = await fetch(url)
 
         if (response.ok) {
+          window.localStorage.setItem('passphrase', passphrase)
+
           const text = await response.text()
           const members: Array<Member> = await computeMembers(text)
 
-          const annonymous = members.map((member, index) => _.pickBy({
-            ...member,
-            // name: `Member #${index}`,
-            from: null,
-            birthday: null,
-            deathday: null,
-            image: null
-          }, _.identity))
+          // const annonymous = members.map((member, index) => _.pickBy({
+          //   ...member,
+          //   // name: `Member #${index}`,
+          //   from: null,
+          //   birthday: null,
+          //   deathday: null,
+          //   image: null
+          // }, _.identity))
 
-          console.log(members)
-          console.log(annonymous)
+          // console.log(members)
+          // console.log(annonymous)
 
           setNodes(members)
           setRootId(members[0].id)
           setDefaultId(members[0].id)
         } else {
+          setPassphrase('')
+          window.localStorage.removeItem('passphrase')
           setError(true)
         }
       } else {
+        setPassphrase('')
+        window.localStorage.removeItem('passphrase')
         setError(true)
       }
 
@@ -75,7 +81,9 @@ export default React.memo<{}>(
     }
 
     useEffect(() => {
-      setPassphrase(prompt('Clau d\'accés') || '')
+      if (!passphrase) {
+        setPassphrase(prompt('Clau d\'accés:') || '')
+      }
     }, [])
 
     useEffect(() => {
