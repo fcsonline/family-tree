@@ -95,6 +95,8 @@ export default React.memo<{}>(
       setHighlightBirthdays(e && e.target.checked)
     }
 
+    if (!passphrase) return null
+
     return (
       <div className={styles.root}>
         <header className={styles.header}>
