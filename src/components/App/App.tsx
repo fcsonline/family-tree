@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import _ from 'lodash'
+import CryptoJS from 'crypto-js';
 import ReactFamilyTree from 'react-family-tree';
 import PinchZoomPan from '../PinchZoomPan/PinchZoomPan';
 import FamilyNode from '../FamilyNode/FamilyNode';
@@ -10,12 +11,13 @@ import computeMembers from '../../utils'
 
 import styles from './App.module.css';
 
-const url = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRz7IXuNUVIbhYCe8f-ERoYfpx4JZVGKijx6ksTc6NyJb9RbSjkMfgIitSg6gbsFA5UqK7UNg5bkFel/pub?gid=1970367138&single=true&output=csv'
+const eurl = 'U2FsdGVkX19y1HrmBM266ECLkq9iWyGhsaicssPfVQcXIdhtLasZroSugpJf0yR64bN7AlL9t0aUKaTT2yqw+ZBaAz7LGWDjae1wM1FLmLXUUSuQEwYsGiL2cCj/e6GwtkgQ7oupjqc6PHeNfvcoKvUuXzeSDyV7s1TUiRqctQocVEfB4imdGxgW85eQUonA94EEqAiuj2enBhw/d8Qq/UDI/4HQeoENIa8NUfezBQFvn+d+XjiHt2dNwL0wKR/S'
 const WIDTH = 190;
 const HEIGHT = 220;
 
 export default React.memo<{}>(
   function App() {
+    const [passphrase, setPassphrase] = useState<string>('');
     const [error, setError] = useState<boolean>(false);
     const [fetching, setFetching] = useState<boolean>(true);
     const [nodes, setNodes] = useState<Array<Member>>([]);
@@ -26,9 +28,21 @@ export default React.memo<{}>(
     const [rootId, setRootId] = useState<string>('');
     const onResetClick = useCallback(() => setRootId(defaultId), [defaultId]);
 
-    useEffect(() => {
+    const decrypt = (ciphertext: string, passphrase: string) => {
+      try {
+        const bytes = CryptoJS.AES.decrypt(ciphertext, passphrase);
+        const originalText = bytes.toString(CryptoJS.enc.Utf8);
 
-      async function compute() {
+        return originalText;
+      } catch (e) {
+        return '';
+      }
+    }
+
+    const fetchMembers = async () => {
+      const url = decrypt(eurl, passphrase)
+
+      if (url.match(/https/)) {
         const response = await fetch(url)
 
         if (response.ok) {
@@ -53,12 +67,25 @@ export default React.memo<{}>(
         } else {
           setError(true)
         }
-
-        setFetching(false)
+      } else {
+        setError(true)
       }
 
-      compute()
+      setFetching(false)
+    }
+
+    useEffect(() => {
+      setPassphrase(prompt('Clau d\'accés') || '')
     }, [])
+
+    useEffect(() => {
+      if (passphrase) fetchMembers()
+    }, [passphrase])
+
+    const onFetchData = () => {
+      setFetching(true)
+      fetchMembers()
+    }
 
     const onSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
       setSearch(e && e.target.value)
@@ -89,21 +116,29 @@ export default React.memo<{}>(
             </span>
             Destacar pròxims aniversaris: <input type="checkbox" defaultChecked={highlightBirthdays} onChange={onHighlightBirthdays} />
           </div>
+          <div className={styles.searcher}>
+            <button onClick={onFetchData}>
+              <span className={styles.emoji} role="img" aria-label="Recarregar">
+                🔁
+              </span>
+              Carregar de nou les dades
+            </button>
+          </div>
           <span className={styles.description}>
             Arbre Genealògic amb tots els avantpassats coneguts de la nostra familia
           </span>
         </header>
         {error && (
           <div className={styles.error}>
-            Error fetching data!
+            Error carregant les dades!
           </div>
         )}
         {!error && fetching && (
           <div className={styles.loading}>
-            Loading...
+            Carregant...
           </div>
         )}
-        {nodes && rootId && (
+        {!fetching && nodes && rootId && (
           <PinchZoomPan
             min={0.5}
             max={2.5}
