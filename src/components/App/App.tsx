@@ -80,7 +80,7 @@ export default React.memo<{}>(
 
     useEffect(() => {
       if (passphrase) fetchMembers()
-    }, [passphrase])
+    }, [passphrase]) // eslint-disable-line react-hooks/exhaustive-deps
 
     const onFetchData = () => {
       setFetching(true)
