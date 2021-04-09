@@ -1,20 +1,20 @@
 {
   "files": {
-    "main.css": "/react-family-tree-example/static/css/main.d0d2f2a2.chunk.css",
-    "main.js": "/react-family-tree-example/static/js/main.9e3650d7.chunk.js",
-    "main.js.map": "/react-family-tree-example/static/js/main.9e3650d7.chunk.js.map",
-    "runtime-main.js": "/react-family-tree-example/static/js/runtime-main.07e629c3.js",
-    "runtime-main.js.map": "/react-family-tree-example/static/js/runtime-main.07e629c3.js.map",
-    "static/js/2.1ee3b74c.chunk.js": "/react-family-tree-example/static/js/2.1ee3b74c.chunk.js",
-    "static/js/2.1ee3b74c.chunk.js.map": "/react-family-tree-example/static/js/2.1ee3b74c.chunk.js.map",
-    "index.html": "/react-family-tree-example/index.html",
-    "precache-manifest.8934d855ececc9ce209e9581f9edabb7.js": "/react-family-tree-example/precache-manifest.8934d855ececc9ce209e9581f9edabb7.js",
-    "service-worker.js": "/react-family-tree-example/service-worker.js",
-    "static/css/main.d0d2f2a2.chunk.css.map": "/react-family-tree-example/static/css/main.d0d2f2a2.chunk.css.map",
-    "static/js/2.1ee3b74c.chunk.js.LICENSE.txt": "/react-family-tree-example/static/js/2.1ee3b74c.chunk.js.LICENSE.txt"
+    "main.css": "/family-tree/static/css/main.d0d2f2a2.chunk.css",
+    "main.js": "/family-tree/static/js/main.9e3650d7.chunk.js",
+    "main.js.map": "/family-tree/static/js/main.9e3650d7.chunk.js.map",
+    "runtime-main.js": "/family-tree/static/js/runtime-main.46c6511b.js",
+    "runtime-main.js.map": "/family-tree/static/js/runtime-main.46c6511b.js.map",
+    "static/js/2.1ee3b74c.chunk.js": "/family-tree/static/js/2.1ee3b74c.chunk.js",
+    "static/js/2.1ee3b74c.chunk.js.map": "/family-tree/static/js/2.1ee3b74c.chunk.js.map",
+    "index.html": "/family-tree/index.html",
+    "precache-manifest.aae6061bd2da926d02f60ec3334a49f0.js": "/family-tree/precache-manifest.aae6061bd2da926d02f60ec3334a49f0.js",
+    "service-worker.js": "/family-tree/service-worker.js",
+    "static/css/main.d0d2f2a2.chunk.css.map": "/family-tree/static/css/main.d0d2f2a2.chunk.css.map",
+    "static/js/2.1ee3b74c.chunk.js.LICENSE.txt": "/family-tree/static/js/2.1ee3b74c.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.07e629c3.js",
+    "static/js/runtime-main.46c6511b.js",
     "static/js/2.1ee3b74c.chunk.js",
     "static/css/main.d0d2f2a2.chunk.css",
     "static/js/main.9e3650d7.chunk.js"
