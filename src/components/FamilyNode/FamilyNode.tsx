@@ -30,7 +30,37 @@ export default React.memo<Props>(
 
     if (true) {
       return (
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 190" style={ { position: 'absolute', ...style}}>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 220 190"
+          style={ { position: 'absolute', cursor: 'pointer', ...style}}
+          onClick={() => { onClick(node.id) }}
+        >
+          <style>
+            {`
+            .name {
+              fill: #333;
+              font-weight: bold;
+              white-space: nowrap;
+              margin: 0px;
+            }
+
+            .from {
+              fill: #666;
+              margin: 0px;
+            }
+
+            .date {
+              fill: #888;
+              margin: 0px;
+            }
+
+            .age {
+              fill: #333;
+              margin-left: 2px;
+            }
+            `}
+          </style>
 
           {imageId && (
             <>
@@ -40,19 +70,19 @@ export default React.memo<Props>(
                 </pattern>
               </defs>
 
-              <circle className="medium" cx="95" cy="40" r="35" fill={ `url(#${imageId})` } stroke="lightblue" strokeWidth="2" />
+              <circle className="medium" cx="110" cy="92" r="35" fill={ `url(#${imageId})` } stroke="lightblue" strokeWidth="2" />
             </>
           )}
 
           {!imageId && (
-            <svg x="60" y="5" width="70" height="70"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+            <svg x="75" y="55" width="70" height="70"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
               <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
             </svg>
           )}
 
-          <text x="95" y="100" textAnchor="middle" className="small">{node.name || '-'}</text>
-          <text x="95" y="130" textAnchor="middle" className="small">{node.from || '-'}</text>
-          <text x="95" y="160" textAnchor="middle" className="small">
+          <text x="110" y="155" textAnchor="middle" className="name">{node.name || '-'}</text>
+          <text x="110" y="180" textAnchor="middle" className="from">{node.from || '-'}</text>
+          <text x="110" y="205" textAnchor="middle" className="date">
             {dates}
             {node.age && node.deathday && `(${node.age})`}
           </text>
