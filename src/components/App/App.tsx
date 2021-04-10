@@ -1,17 +1,16 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import _ from 'lodash'
-import CryptoJS from 'crypto-js';
 import ReactFamilyTree from 'react-family-tree';
 import PinchZoomPan from '../PinchZoomPan/PinchZoomPan';
 import FamilyNode from '../FamilyNode/FamilyNode';
 import { Node, ExtNode } from 'relatives-tree/lib/types';
 import { Member, ExtMember } from '../../types'
 
-import computeMembers from '../../utils'
+import { decrypt, computeMembers } from '../../utils'
 
 import styles from './App.module.css';
 
-const eurl = 'U2FsdGVkX19y1HrmBM266ECLkq9iWyGhsaicssPfVQcXIdhtLasZroSugpJf0yR64bN7AlL9t0aUKaTT2yqw+ZBaAz7LGWDjae1wM1FLmLXUUSuQEwYsGiL2cCj/e6GwtkgQ7oupjqc6PHeNfvcoKvUuXzeSDyV7s1TUiRqctQocVEfB4imdGxgW85eQUonA94EEqAiuj2enBhw/d8Qq/UDI/4HQeoENIa8NUfezBQFvn+d+XjiHt2dNwL0wKR/S'
+const eurl = 'U2FsdGVkX186bIgFZtZlz05ejtdGVBx5NqCEaBf8euwiqUXeN5+tiZuQYOdlemNKBhLOItq42c2wOMWiiVgk8Ui9TGBOZ7NSYSKI0FSD/wxN4pmLk/WqwG9DzaYmDPavag3vPsUU3jYnvplxp8Ya4BKN5kzcIo7GIudPhLjshVeOXoftWuKj3mbtKwI7ORf9GlD72qC8mVA0aHy1fZrcGTeGBAV3UuzThH626WUaUDDWynZ94GlVfVdb9IlCvPA9'
+
 const WIDTH = 190;
 const HEIGHT = 220;
 
@@ -28,17 +27,6 @@ export default React.memo<{}>(
     const [rootId, setRootId] = useState<string>('');
     const onResetClick = useCallback(() => setRootId(defaultId), [defaultId]);
 
-    const decrypt = (ciphertext: string, passphrase: string) => {
-      try {
-        const bytes = CryptoJS.AES.decrypt(ciphertext, passphrase);
-        const originalText = bytes.toString(CryptoJS.enc.Utf8);
-
-        return originalText;
-      } catch (e) {
-        return '';
-      }
-    }
-
     const fetchMembers = async () => {
       const url = decrypt(eurl, passphrase)
 
@@ -50,18 +38,6 @@ export default React.memo<{}>(
 
           const text = await response.text()
           const members: Array<Member> = await computeMembers(text)
-
-          // const annonymous = members.map((member, index) => _.pickBy({
-          //   ...member,
-          //   // name: `Member #${index}`,
-          //   from: null,
-          //   birthday: null,
-          //   deathday: null,
-          //   image: null
-          // }, _.identity))
-
-          // console.log(members)
-          // console.log(annonymous)
 
           setNodes(members)
           setRootId(members[0].id)
@@ -84,7 +60,7 @@ export default React.memo<{}>(
       if (!passphrase) {
         setPassphrase(prompt('Clau d\'accés:') || '')
       }
-    }, [])
+    }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
       if (passphrase) fetchMembers()

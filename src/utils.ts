@@ -1,4 +1,4 @@
-// import crypto, { Utf8AsciiLatin1Encoding } from 'crypto'
+import CryptoJS from 'crypto-js';
 import { Gender, RelType, Relation } from 'relatives-tree/lib/types';
 import { Member } from './types'
 import Papa from 'papaparse'
@@ -159,7 +159,7 @@ const computeMember = (members: DataMembers, member: DataMember) => {
    })
 }
 
-const computeMembers = async (text: string): Promise<Array<Member>> => {
+export const computeMembers = async (text: string): Promise<Array<Member>> => {
   const { data } = Papa.parse<IHash<string>>(text, { header: true });
 
   const members: DataMembers = _.compact(mapMembers(data))
@@ -167,4 +167,30 @@ const computeMembers = async (text: string): Promise<Array<Member>> => {
   return members.map((member: DataMember) => computeMember(members, member))
 }
 
-export default computeMembers
+export const anonymizeMembers = (members: Array<Member>) => {
+  const anonymous = members.map((member, index) => _.pickBy({
+    ...member,
+    // name: `Member #${index}`,
+    from: null,
+    birthday: null,
+    deathday: null,
+    image: null
+  }, _.identity))
+
+  return anonymous
+}
+
+export const decrypt = (ciphertext: string, passphrase: string) => {
+  try {
+    const bytes = CryptoJS.AES.decrypt(ciphertext, passphrase);
+    const originalText = bytes.toString(CryptoJS.enc.Utf8);
+
+    return originalText;
+  } catch (e) {
+    return '';
+  }
+}
+
+export const encrypt = (text: string, passphrase: string) => {
+  return CryptoJS.AES.encrypt(text, passphrase).toString()
+}
