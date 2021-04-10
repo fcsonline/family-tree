@@ -31,7 +31,7 @@ export default React.memo<{}>(
       const url = decrypt(eurl, passphrase)
 
       if (url.match(/https/)) {
-        const response = await fetch(url)
+        const response = await fetch(`${url}&ts=${(new Date()).getTime()}`)
 
         if (response.ok) {
           window.localStorage.setItem('passphrase', passphrase)
