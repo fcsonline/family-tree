@@ -9,10 +9,11 @@ interface Props {
   node: ExtMember;
   isRoot: boolean;
   search?: string,
+  left: number,
+  top: number,
   highlightBirthday: boolean,
   onClick: (id: string) => void;
   onSubClick: (id: string) => void;
-  style?: React.CSSProperties;
 }
 
 const getImageUrl = (image: string) => {
@@ -25,7 +26,7 @@ const getImageUrl = (image: string) => {
 }
 
 export default React.memo<Props>(
-  function FamilyNode({ node, isRoot, search, highlightBirthday, onClick, onSubClick, style }) {
+  function FamilyNode({ node, isRoot, search, highlightBirthday, onClick, onSubClick, left, top }) {
     const isMatch = !!search && (new RegExp(_.escapeRegExp(search), 'i')).test(node.name)
     const dates = _.compact([node.birthday, node.deathday]).join(' - ')
     const imageSrc = getImageUrl(node.image)
@@ -38,9 +39,13 @@ export default React.memo<Props>(
     if (true) {
       return (
         <svg
+          x={left}
+          y={top}
+          width="220"
+          height="190"
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 220 190"
-          style={ { position: 'absolute', cursor: 'pointer', ...style}}
+          style={ { cursor: 'pointer'}}
           onClick={() => { onClick(node.id) }}
         >
           <style>
@@ -78,16 +83,16 @@ export default React.memo<Props>(
             {!imageSrc && (
               <pattern id={node.id} x="0%" y="0%" height="100%" width="100%" viewBox="0 0 20 20">
                 <rect width="20" height="20" fill="white" />
-                <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
+                <path fill="#999" fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
               </pattern>
             )}
           </defs>
 
-          <circle className="medium" cx="110" cy="92" r="35" fill={ `url(#${node.id})` } stroke="lightblue" strokeWidth="2" />
+          <circle className="medium" cx="110" cy="40" r="35" fill={ `url(#${node.id})` } stroke="lightblue" strokeWidth="2" />
 
-          <text x="110" y="155" textAnchor="middle" className="name">{node.name || '-'}</text>
-          <text x="110" y="180" textAnchor="middle" className="from">{node.from || '-'}</text>
-          <text x="110" y="205" textAnchor="middle" className="date">
+          <text x="110" y="95" textAnchor="middle" className="name">{node.name || '-'}</text>
+          <text x="110" y="120" textAnchor="middle" className="from">{node.from || '-'}</text>
+          <text x="110" y="145" textAnchor="middle" className="date">
             {dates}
             {node.age && node.deathday && `(${node.age})`}
           </text>
@@ -102,7 +107,6 @@ export default React.memo<Props>(
           birthdayThisWeek && styles.birthday,
           isMatch && styles.match
         )}
-        style={style}
         onClick={() => { onClick(node.id) }}
       >
         <div

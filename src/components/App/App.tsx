@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import ReactFamilyTree from 'react-family-tree';
 import PinchZoomPan from '../PinchZoomPan/PinchZoomPan';
+import FamilyTree from '../FamilyTree/FamilyTree';
 import FamilyNode from '../FamilyNode/FamilyNode';
 import { Node, ExtNode } from 'relatives-tree/lib/types';
 import { Member, ExtMember } from '../../types'
@@ -131,7 +131,7 @@ export default React.memo<{}>(
             captureWheel
             className={styles.wrapper}
           >
-            <ReactFamilyTree
+            <FamilyTree
               nodes={nodes as Node[]}
               rootId={rootId}
               width={WIDTH}
@@ -146,11 +146,8 @@ export default React.memo<{}>(
                   highlightBirthday={highlightBirthdays}
                   onSubClick={setRootId}
                   onClick={setRootId}
-                  style={{
-                    width: WIDTH,
-                    height: HEIGHT,
-                    transform: `translate(${node.left * (WIDTH / 2)}px, ${node.top * (HEIGHT / 2)}px)`,
-                  }}
+                  left={node.left * (WIDTH / 2) - 15}
+                  top={node.top * (HEIGHT / 2) + 65}
                 />
               )}
             />
