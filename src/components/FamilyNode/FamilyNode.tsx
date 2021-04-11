@@ -48,31 +48,6 @@ export default React.memo<Props>(
           style={ { cursor: 'pointer'}}
           onClick={() => { onClick(node.id) }}
         >
-          <style>
-            {`
-            .name {
-              fill: #333;
-              font-weight: bold;
-              white-space: nowrap;
-              margin: 0px;
-            }
-
-            .from {
-              fill: #666;
-              margin: 0px;
-            }
-
-            .date {
-              fill: #888;
-              margin: 0px;
-            }
-
-            .age {
-              fill: #333;
-              margin-left: 2px;
-            }
-            `}
-          </style>
 
           <defs>
             {imageSrc && (
@@ -90,9 +65,9 @@ export default React.memo<Props>(
 
           <circle className="medium" cx="110" cy="40" r="35" fill={ `url(#${node.id})` } stroke="lightblue" strokeWidth="2" />
 
-          <text x="110" y="95" textAnchor="middle" className="name">{node.name || '-'}</text>
-          <text x="110" y="120" textAnchor="middle" className="from">{node.from || '-'}</text>
-          <text x="110" y="145" textAnchor="middle" className="date">
+          <text x="110" y="95" textAnchor="middle" fill="#333" style={{ fontWeight: 'bold', fontFamily: 'Arial' }}>{node.name || '-'}</text>
+          <text x="110" y="120" textAnchor="middle" fill="#666" style={{ fontFamily: 'Arial' }}>{node.from || '-'}</text>
+          <text x="110" y="145" textAnchor="middle" fill="#888" style={{ fontFamily: 'Arial' }}>
             {dates}
             {node.age && node.deathday && `(${node.age})`}
           </text>

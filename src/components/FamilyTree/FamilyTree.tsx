@@ -28,6 +28,7 @@ export default React.memo<Props>(function ReactFamilyTree(props) {
   return (
      <svg
        xmlns="http://www.w3.org/2000/svg"
+       xmlnsXlink="http://www.w3.org/1999/xlink"
        className={props.className}
        height={cHeight}
        width={cWidth}
