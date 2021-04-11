@@ -57,6 +57,15 @@ export default React.memo<{}>(
     }
 
     useEffect(() => {
+      document.addEventListener("copy", (e) => {
+        if (e.clipboardData) e.clipboardData.setData("text/plain", 'fooo');
+
+        e.preventDefault();
+      });
+    }, [])
+
+
+    useEffect(() => {
       if (!passphrase) {
         setPassphrase(prompt('Clau d\'accés:') || '')
       }
@@ -65,6 +74,10 @@ export default React.memo<{}>(
     useEffect(() => {
       if (passphrase) fetchMembers()
     }, [passphrase]) // eslint-disable-line react-hooks/exhaustive-deps
+
+    const onCopy = (e: React.MouseEvent<HTMLButtonElement>) => {
+      document.execCommand('copy')
+    }
 
     const onFetchData = () => {
       setFetching(true)
@@ -101,6 +114,14 @@ export default React.memo<{}>(
              🎂
             </span>
             Destacar pròxims aniversaris: <input type="checkbox" defaultChecked={highlightBirthdays} onChange={onHighlightBirthdays} />
+          </div>
+          <div className={styles.searcher}>
+            <button onClick={onCopy}>
+              <span className={styles.emoji} role="img" aria-label="Copiar">
+                🔁
+              </span>
+              Copiar
+            </button>
           </div>
           <div className={styles.searcher}>
             <button onClick={onFetchData}>
