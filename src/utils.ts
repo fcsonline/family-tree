@@ -140,11 +140,10 @@ const computeMember = (members: DataMembers, member: DataMember) => {
      if (!name) return null
 
      // NOTE: Ensure unique. Names are not unique sometimes...
-     // const hash = crypto.createHash('sha1')
-     // const id = hash.update(name, 'utf-8' as Utf8AsciiLatin1Encoding).digest('hex').slice(0, 6)
+     const id = CryptoJS.SHA1(name).toString()
 
      return {
-       id: name,
+       id,
        name,
        father,
        mother,

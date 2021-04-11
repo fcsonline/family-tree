@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import _ from 'lodash';
 import classNames from 'classnames';
 import { ExtMember } from '../../types'
@@ -15,13 +15,20 @@ interface Props {
   style?: React.CSSProperties;
 }
 
+const getImageUrl = (image: string) => {
+  const captures = (image || '').match(/https:\/\/drive.google.com\/file\/d\/(.*)\/view/)
+  const imageId = captures && captures[1]
+
+  if (!imageId) return ''
+
+  return `https://drive.google.com/thumbnail?id=${imageId}`
+}
+
 export default React.memo<Props>(
   function FamilyNode({ node, isRoot, search, highlightBirthday, onClick, onSubClick, style }) {
-    const dates = _.compact([node.birthday, node.deathday]).join(' - ')
-    const captures = (node.image || '').match(/https:\/\/drive.google.com\/file\/d\/(.*)\/view/)
-    const imageId = captures && captures[1]
     const isMatch = !!search && (new RegExp(_.escapeRegExp(search), 'i')).test(node.name)
-    const imageSrc = `https://drive.google.com/thumbnail?id=${imageId}`
+    const dates = _.compact([node.birthday, node.deathday]).join(' - ')
+    const imageSrc = getImageUrl(node.image)
 
     const date = parse(node.birthday, 'd/M/yyyy', new Date())
     const currentDate = setYear(date, getYear(new Date()))
@@ -62,23 +69,21 @@ export default React.memo<Props>(
             `}
           </style>
 
-          {imageId && (
-            <>
-              <defs>
-                <pattern id={imageId || 'image'} x="0%" y="0%" height="100%" width="100%" viewBox="0 0 70 70">
-                  <image x="0%" y="0%" width="70" height="70" xlinkHref={imageSrc}></image>
-                </pattern>
-              </defs>
+          <defs>
+            {imageSrc && (
+              <pattern id={node.id} x="0%" y="0%" height="100%" width="100%" viewBox="0 0 70 70">
+                <image x="0%" y="0%" width="70" height="70" xlinkHref={imageSrc}></image>
+              </pattern>
+            )}
+            {!imageSrc && (
+              <pattern id={node.id} x="0%" y="0%" height="100%" width="100%" viewBox="0 0 20 20">
+                <rect width="20" height="20" fill="white" />
+                <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
+              </pattern>
+            )}
+          </defs>
 
-              <circle className="medium" cx="110" cy="92" r="35" fill={ `url(#${imageId})` } stroke="lightblue" strokeWidth="2" />
-            </>
-          )}
-
-          {!imageId && (
-            <svg x="75" y="55" width="70" height="70"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-              <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
-            </svg>
-          )}
+          <circle className="medium" cx="110" cy="92" r="35" fill={ `url(#${node.id})` } stroke="lightblue" strokeWidth="2" />
 
           <text x="110" y="155" textAnchor="middle" className="name">{node.name || '-'}</text>
           <text x="110" y="180" textAnchor="middle" className="from">{node.from || '-'}</text>
@@ -107,10 +112,10 @@ export default React.memo<Props>(
             isRoot && styles.isRoot,
           )}
         >
-          {imageId && (
+          {imageSrc && (
             <img className={styles.image} src={imageSrc} alt={node.name} title={node.name} />
           )}
-          {!imageId && (
+          {!imageSrc && (
             <div className={styles.anonymous}>
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                 <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
