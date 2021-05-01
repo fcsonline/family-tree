@@ -25,8 +25,34 @@ const getImageUrl = (image: string) => {
   return `https://drive.google.com/thumbnail?id=${imageId}`
 }
 
+
+const getDataUri = (url: string, callback: any) =>  {
+  const image = new Image()
+
+  image.crossOrigin = 'anonymous'
+
+  image.onload = function () {
+    const canvas = document.createElement('canvas') as HTMLCanvasElement
+    const context = canvas.getContext('2d')
+
+    canvas.width = 70
+    canvas.height = 70
+
+    if (context) {
+      context.drawImage(this as SVGImageElement, 0, 0)
+    }
+
+    callback(canvas.toDataURL('image/png'))
+  }
+
+  image.src = url
+}
+
+// Usage
+
 export default React.memo<Props>(
   function FamilyNode({ node, isRoot, search, highlightBirthday, onClick, onSubClick, left, top }) {
+    const [dataUri, setDataUri] = useState<string>('')
     const isMatch = !!search && (new RegExp(_.escapeRegExp(search), 'i')).test(node.name)
     const dates = _.compact([node.birthday, node.deathday]).join(' - ')
     const imageSrc = getImageUrl(node.image)
@@ -36,15 +62,18 @@ export default React.memo<Props>(
     const days = differenceInDays(currentDate, new Date())
     const birthdayThisWeek = highlightBirthday && days >= 0 && days < 15 && !node.deathday
 
+    useEffect(() => {
+      getDataUri(imageSrc, (dataUri: string) => {
+        setDataUri(dataUri)
+      })
+    }, [imageSrc])
+
     if (true) {
       return (
-        <svg
-          x={left}
-          y={top}
+        <g
           width="220"
           height="190"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 220 190"
+          transform={`translate(${left},${top})`}
           style={ { cursor: 'pointer'}}
           onClick={() => { onClick(node.id) }}
         >
@@ -52,7 +81,7 @@ export default React.memo<Props>(
           <defs>
             {imageSrc && (
               <pattern id={node.id} x="0%" y="0%" height="100%" width="100%" viewBox="0 0 70 70">
-                <image x="0%" y="0%" width="70" height="70" xlinkHref={imageSrc}></image>
+                <image x="0%" y="0%" width="70" preserveAspectRatio="xMidYMid slice" xlinkHref={dataUri}></image>
               </pattern>
             )}
             {!imageSrc && (
@@ -69,9 +98,9 @@ export default React.memo<Props>(
           <text x="110" y="120" textAnchor="middle" fill="#666" style={{ fontFamily: 'Arial' }}>{node.from || '-'}</text>
           <text x="110" y="145" textAnchor="middle" fill="#888" style={{ fontFamily: 'Arial' }}>
             {dates}
-            {node.age && node.deathday && `(${node.age})`}
+            {node.age && node.deathday && ` (${node.age})`}
           </text>
-        </svg>
+        </g>
       )
     }
 

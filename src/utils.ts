@@ -169,7 +169,8 @@ export const computeMembers = async (text: string): Promise<Array<Member>> => {
 export const anonymizeMembers = (members: Array<Member>) => {
   const anonymous = members.map((member, index) => _.pickBy({
     ...member,
-    // name: `Member #${index}`,
+    name: `Member #${index}`,
+    age: null,
     from: null,
     birthday: null,
     deathday: null,

@@ -5,7 +5,7 @@ import FamilyNode from '../FamilyNode/FamilyNode';
 import { Node, ExtNode } from 'relatives-tree/lib/types';
 import { Member, ExtMember } from '../../types'
 
-import { decrypt, computeMembers } from '../../utils'
+import { decrypt, computeMembers, anonymizeMembers } from '../../utils'
 
 import styles from './App.module.css';
 
@@ -38,6 +38,8 @@ export default React.memo<{}>(
 
           const text = await response.text()
           const members: Array<Member> = await computeMembers(text)
+
+          console.log(anonymizeMembers(members))
 
           setNodes(members)
           setRootId(members[0].id)
